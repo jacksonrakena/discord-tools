@@ -8,3 +8,7 @@ Usage:
 5) Copy the output of step 2 into the box
 6) Run
 7) Feel the shame
+
+Guilds usage:
+2) Run node guilds.js`
+3) Copy the contents of `friends-guilds-named.json` to [https://discord-mutuals.tools.jacksonrakena.com/guilds.html](https://discord-mutuals.tools.jacksonrakena.com/guilds.html)
