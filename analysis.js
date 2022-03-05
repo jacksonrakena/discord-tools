@@ -30,6 +30,7 @@ async function calculateMutualFriendsArray() {
       "./friends-mutual-arr.json",
       JSON.stringify(mutualFriendsArray)
     );
+    console.log(JSON.stringify(mutualFriendsArray));
     return mutualFriendsArray;
   }
   const mutualFriendsArray = fs.readFileSync("./friends-mutual-arr.json");
