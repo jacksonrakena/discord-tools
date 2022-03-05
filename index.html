@@ -44,7 +44,7 @@
     <script>
         const colad3 = cola.d3adaptor(d3);
         async function start() {
-            console.log(cola)
+            console.log(colad3)
             const mutualsData = JSON.parse(document.querySelector("textarea").value);
             const colaData = {
                 nodes: [],
@@ -63,13 +63,15 @@
             for (var dd = 0; dd < mutualsData.length; dd++) {
                 const newmutual0 = mutualsData[dd];
                 for (var i = 0; i < newmutual0.mutuals.length; i++) {
-                    colaData.links.push({
+                    var newlinkobj = {
                         source: colaData.nodes.findIndex(e => e.name === newmutual0.name),
                         target: colaData.nodes.findIndex(e => e.name === newmutual0.mutuals[i].name)
-                    })
+                    }
+                    if (newlinkobj.source === -1 || newlinkobj.target === -1) continue;
+                    colaData.links.push(newlinkobj)
                 }
             }
-            console.log(JSON.stringify(colaData))
+            console.log(colaData);
             var width = window.visualViewport.width,
                 height = window.visualViewport.height;
             var wh = 5000;
