@@ -3,6 +3,7 @@ const token = config.token;
 
 const axios = require("axios");
 const Eris = require("eris");
+const init = require("./common");
 const WAIT = 600;
 
 // Start deleting messages before this ID
@@ -14,7 +15,8 @@ const channel = "951301187334983691";
 // Only delete messages by this author
 const targetAuthorId = "255950165200994307";
 
-const client = new Eris.Client(token);
+const std = init();
+const client = std.client;
 async function main() {
   var c = 0;
   var id = startingMessageId;

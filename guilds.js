@@ -4,10 +4,14 @@ const token = config.token;
 //console.log(friends.length);
 const axios = require("axios");
 const fs = require("fs");
+const Eris = require("eris");
 
 const auth = {
   Authorization: token,
 };
+
+const std = require("./common")();
+const client = std.client;
 
 async function downloadFriendsList() {
   if (!fs.existsSync("./friends.json")) {
@@ -27,34 +31,33 @@ async function downloadFriendsList() {
   return JSON.parse(fs.readFileSync("./friends.json"));
 }
 
-var knownguilds = {};
-var knownguilds_named = {};
-async function downloadFriendsWithMutualGuilds() {
+async function downloadFriendsWithMutualGuilds(friends) {
   if (!fs.existsSync("./friends-guilds.json")) {
     console.log(
       "[friends-guilds.json] friends-guilds list doesn't exist, downloading"
     );
-    var _mguilds = {};
+
+    var knownguilds = {};
+    var knownguilds_named = {};
+
     for (var i = 0; i < friends.length; i++) {
       var friend = friends[i];
-      var response = await axios.default.get(
-        `https://discord.com/api/v9/users/${friend.id}/profile?with_mutual_guilds=true`,
-        { headers: auth }
+      var response = await client.requestHandler.request(
+        "GET",
+        `/users/${friend.id}/profile`,
+        true,
+        { with_mutual_guilds: true }
       );
-      response = response.data;
       console.log(
-        `friend ${friend.user.username} has ${response.mutual_guilds?.length} mutual guilds`
+        `${i + 1}/${friends.length} - friend ${friend.user.username} has ${
+          response.mutual_guilds?.length
+        } mutual guilds`
       );
-      for (var mgi = 0; mgi < response.mutual_guilds.length; mgi++) {
-        if (Object.keys(knownguilds).includes(response.mutual_guilds[mgi].id)) {
-          knownguilds[response.mutual_guilds[mgi].id].push(
-            friend.user.username
-          );
-        } else {
-          knownguilds[response.mutual_guilds[mgi].id] = [friend.user.username];
-        }
+      for (let mutualGuild of response.mutual_guilds) {
+        if (knownguilds[mutualGuild.id]) {
+          knownguilds[mutualGuild.id].push(friend.user.username);
+        } else knownguilds[mutualGuild.id] = [friend.user.username];
       }
-      await new Promise((resolve) => setTimeout(resolve, 1000));
     }
     console.log(
       `finished downloading friends w/ guilds, downloaded ${knownguilds.length} friends`
@@ -81,11 +84,9 @@ async function downloadFriendsWithMutualGuilds() {
   );
   return JSON.parse(fs.readFileSync("./friends-guilds.json"));
 }
-var friends;
-var mguilds;
 async function main() {
-  friends = await downloadFriendsList();
-  mguilds = await downloadFriendsWithMutualGuilds();
+  var friends = await downloadFriendsList();
+  var mguilds = await downloadFriendsWithMutualGuilds(friends);
 }
 
 main();
