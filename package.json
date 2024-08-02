@@ -1,6 +1,23 @@
 {
+  "name": "discord-tools",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.3.4"
+  },
   "dependencies": {
-    "axios": "^0.26.0",
-    "eris": "^0.17.1"
+    "axios": "^1.7.3",
+    "eris": "^0.17.2",
+    "graphology": "^0.25.4",
+    "graphology-components": "^1.5.4",
+    "graphology-layout": "^0.6.1",
+    "graphology-layout-forceatlas2": "^0.10.1",
+    "sigma": "^3.0.0-beta.26"
   }
 }
